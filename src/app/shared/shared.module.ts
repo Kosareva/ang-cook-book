@@ -10,7 +10,6 @@ import {FormsModule} from '@angular/forms';
     exports: [
         CommonModule,
         DropdownDirective,
-        FormsModule,
     ]
 })
 export class SharedModule {

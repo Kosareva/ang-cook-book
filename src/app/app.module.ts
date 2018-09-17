@@ -5,17 +5,34 @@ import {AppComponent} from './app.component';
 
 import {HttpClientModule} from '@angular/common/http';
 import {CoreModule} from './core/core.module';
+import {AuthModule} from './auth/auth.module';
+import {AppRoutingModule} from './app-routing.module';
+import {SharedModule} from './shared/shared.module';
+import {ShoppingListModule} from './shopping-list/shopping-list.module';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './store/app.reducers';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from './auth/store/auth.effects';
+import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {environment} from '../environments/environment';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
     declarations: [
         AppComponent,
     ],
     imports: [
-        BrowserModule,
-        // AppRoutingModule,
+        BrowserModule.withServerTransition({appId: 'ng-cook-book'}),
         HttpClientModule,
-        // SharedModule,
+        AppRoutingModule,
+        SharedModule,
+        ShoppingListModule,
+        AuthModule,
         CoreModule,
+        StoreModule.forRoot(reducers),
+        EffectsModule.forRoot([AuthEffects]),
+        StoreRouterConnectingModule,
+        !environment.production ? StoreDevtoolsModule.instrument() : [],
     ],
     bootstrap: [AppComponent]
 })

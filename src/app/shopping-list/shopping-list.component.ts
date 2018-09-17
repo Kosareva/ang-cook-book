@@ -1,45 +1,30 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Ingredient} from '../shared/ingredient.model';
-import {ShoppingListService} from './shopping-list.service';
-import {Subscription} from 'rxjs/Subscription';
+import {Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import * as ShoppingListActions from './store/shopping-list.actions';
+import * as fromShoppingList from './store/shopping-list.reducers';
+import * as fromApp from '../store/app.reducers';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Component({
     selector: 'app-shopping-list',
     templateUrl: './shopping-list.component.html',
     styleUrls: ['./shopping-list.component.css'],
 })
-export class ShoppingListComponent implements OnInit, OnDestroy {
+export class ShoppingListComponent implements OnInit {
 
-    ingredients: Ingredient[];
-    private subscription: Subscription;
+    shoppingListState: Observable<fromShoppingList.State>;
 
-    constructor(private shoppingListService: ShoppingListService) {
+    constructor(
+        private store: Store<fromApp.AppState>
+    ) {
     }
 
     ngOnInit() {
-
-        this.ingredients = this.shoppingListService.getIngredients();
-        this.subscription = this.shoppingListService.ingredientsChanged
-            .subscribe(
-                (ingredients: Ingredient[]) => {
-                    this.ingredients = ingredients;
-                }
-            );
-        // this.shoppingListService.ingredientsAddedToShoppingList
-        //     .subscribe(
-        //         (ingredients: Ingredient[]) => {
-        //             this.ingredients = ingredients;
-        //         }
-        //     );
-
+        this.shoppingListState = this.store.select('shoppingList');
     }
 
     onEditItem(index: number) {
-        this.shoppingListService.startedEditing.next(index);
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.store.dispatch(new ShoppingListActions.StartEdit(index));
     }
 
 }

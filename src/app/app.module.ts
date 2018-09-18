@@ -22,7 +22,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
         AppComponent,
     ],
     imports: [
-        BrowserModule.withServerTransition({appId: 'ng-cook-book'}),
+        BrowserModule.withServerTransition({appId: 'angular-cook-book'}),
         HttpClientModule,
         AppRoutingModule,
         SharedModule,

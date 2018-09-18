@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import * as AuthActions from './auth.actions';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import {map, mergeMap, switchMap, tap} from 'rxjs/operators';
 import {from} from 'rxjs/internal/observable/from';
 
